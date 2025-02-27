@@ -1,0 +1,127 @@
+/* SignIn.css */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  }
+  
+  .login-container {
+    background-color: white;
+    width: 100%;
+    max-width: 400px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    margin: 40px auto;
+    overflow: hidden;
+  }
+  
+  .login-body {
+    padding: 32px 24px;
+  }
+  
+  .logo {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 24px;
+  }
+  
+  h1 {
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600;
+    color: #002f34;
+    margin-bottom: 24px;
+  }
+  
+  .input-field {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    outline: none;
+  }
+  
+  .input-field:focus {
+    border-color: #002f34;
+    box-shadow: 0 0 0 2px rgba(0, 47, 52, 0.1);
+  }
+  
+  .alert {
+    background-color: #fffbea;
+    border: 1px solid #fff2c0;
+    border-radius: 4px;
+    padding: 12px;
+    margin-bottom: 24px;
+    color: #5a3e00;
+    font-size: 14px;
+  }
+  
+  .next-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #002f34;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-bottom: 20px;
+    transition: background-color 0.2s;
+  }
+  
+  .next-button:hover {
+    background-color: #004b53;
+  }
+  
+  .signup-link {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 14px;
+    color: #444;
+  }
+  
+  .signup-link a {
+    color: #002f34;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  
+  .signup-link a:hover {
+    text-decoration: underline;
+  }
+  
+  .privacy-notice {
+    text-align: center;
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 8px;
+  }
+
+  .loader {
+    border: 3px solid #f3f3f3; /* Light grey */
+    border-top: 3px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    animation: spin 1s linear infinite;
+    display: inline-block;
+    margin-left: 10px;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  /* Disable button while loading */
+  .next-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
