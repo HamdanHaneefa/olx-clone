@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import './Header.css';
 import OlxLogo from '../../assets/OlxLogo.jsx';
@@ -13,10 +13,26 @@ function Header() {
   const { user } = useContext(AuthContext);
   const { firebase } = useContext(FirebaseContext);
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);  // Loader state
+  const [loading, setLoading] = useState(false);
+  const [showLogout, setShowLogout] = useState(false);
+  const loginRef = useRef(null);
+
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (loginRef.current && !loginRef.current.contains(event.target)) {
+        setShowLogout(false);
+      }
+    }
+    
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const handleLogout = () => {
-    setLoading(true); // Start loader
+    setLoading(true);
     const auth = getAuth();
     
     signOut(auth)
@@ -27,7 +43,7 @@ function Header() {
         console.error("Logout error:", error);
       })
       .finally(() => {
-        setLoading(false); // Stop loader
+        setLoading(false);
       });
   };
 
@@ -35,47 +51,71 @@ function Header() {
     <div className="headerParentDiv">
       <div className="headerChildDiv">
         <div className="brandName">
-          <OlxLogo />
+          <Link to={'/'} aria-label="OLX Home"> 
+            <OlxLogo /> 
+          </Link>
         </div>
+
         <div className="placeSearch">
           <Search />
-          <input type="text" />
+          <input type="text" placeholder="Location" aria-label="Search location" />
           <Arrow />
         </div>
+
         <div className="productSearch">
           <div className="input">
-            <input type="text" placeholder="Find car, mobile phone and more..." />
+            <input 
+              type="text" 
+              placeholder="Find cars, mobile phones and more..." 
+              aria-label="Search products"
+            />
           </div>
-          <div className="searchAction">
+          <div className="searchAction" aria-label="Search">
             <Search color="#ffffff" />
           </div>
         </div>
-        <div className="language">
-          <span> ENGLISH </span>
-          <Arrow />
-        </div>
-        <div className="loginPage">
-          <Link to="/login">
-            <span>{user ? `Welcome ${user.displayName} ` : "Login"}</span>
-          </Link>
-          <hr />
-        </div>
-
-        {user && (
-          <Link>
-            <span onClick={handleLogout} className="logout-button" disabled={loading}>
-              {loading ? <div className="loader"></div> : "Logout"}
+     
+        <div 
+          className="loginPage"
+          ref={loginRef}
+          onMouseEnter={() => setShowLogout(true)}
+          onMouseLeave={() => setShowLogout(false)}
+        >
+          {user ? (
+            <span className="welcome-text" title={`Logged in as ${user.displayName}`}>
+              {`Welcome ${user.displayName}`}
             </span>
-          </Link>
-        )}
-
-        <div className="sellMenu">
+          ) : (
+            <Link to="/login">
+              <span>Login</span>
+            </Link>
+          )}
+          
+          {user && showLogout && (
+            <button 
+              onClick={handleLogout} 
+              className="logout-button" 
+              disabled={loading}
+              aria-label="Logout"
+            >
+              {loading ? (
+                <>
+                  <div className="loader" aria-hidden="true"></div>
+                  <span>Logging out</span>
+                </>
+              ) : "Logout"}
+            </button>
+          )}
+        </div>
+        {user && 
+        <Link to="/create" className="sellMenu" aria-label="Sell an item">
           <SellButton />
           <div className="sellMenuContent">
             <SellButtonPlus />
             <span>SELL</span>
           </div>
-        </div>
+        </Link>
+}
       </div>
     </div>
   );

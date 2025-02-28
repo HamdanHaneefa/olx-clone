@@ -39,27 +39,43 @@
   height: 270px;
   display: inline-block;
   cursor: pointer;
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
 }
 
-.card .favorite {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 16px rgba(0, 47, 52, 0.15);
+  background-color: #f9f9f9;
+}
+
+.card:hover .content .rate {
+  color: #00a49f;
+}
+
+.card:hover .image img {
+  transform: scale(1.05);
 }
 
 .card .image {
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 120px; /* Fixed height for the image container */
+  width: 100%;
+  overflow: hidden; /* Prevent image overflow during hover scale */
+  margin-bottom: 10px; /* Add some space below the image */
 }
 
 .card .image img {
-  height: 100px;
   max-width: 100%;
   max-height: 100%;
-  min-height: 100%;
-  text-align: center;
+  object-fit: contain; /* This ensures image maintains aspect ratio */
+  transition: transform 0.3s ease;
 }
+
 .card .content .rate {
   margin-top: 10px;
   font-size: larger;
@@ -84,4 +100,20 @@
 .recommendations .heading span {
   font-size: 24px;
   color: #002f34;
+}
+
+
+.productLink {
+  text-decoration: none;
+  color: inherit;
+  display: contents;
+}
+
+.card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.productLink:hover .card {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }

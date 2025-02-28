@@ -1,10 +1,12 @@
-import './Login.css'
+import './Login.css';
 import { Link } from 'react-router-dom';
 import OlxLogo from '../../assets/OlxLogo.jsx';
 import { useState, useContext } from 'react';
 import { FirebaseContext } from '../../store/Context.jsx';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -21,17 +23,18 @@ function Login() {
 
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      navigate('/');
+      toast.success('Login successful! 🎉');
+      setTimeout(() => navigate('/'), 1300);
     } catch (error) {
-      console.log(error.message);
-      alert(error.message);
+      toast.error(error.code.split('/')[1].split('-').join(' '))
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   };
 
   return (
     <>
+      <ToastContainer position="top-right" autoClose={3000} />
       <div className="login-container">
         <div className="login-body">
           <div className="logo">
