@@ -2,26 +2,27 @@ import React, { useEffect, useState, useContext } from "react";
 import "./View.css";
 import Header from "../Header/Header";
 import { PostContext } from "../../store/PostContext";
-import { FirebaseContext } from "../../store/Context";
 import { db } from "../../firebase/config";
 import { collection, query, where, getDocs } from "firebase/firestore";
 
 function SingleProductView() {
-  const { postDetails } = useContext(PostContext);
+  const { postDetails, setPostDetails } = useContext(PostContext);
   const [userDetails, setUserDetails] = useState(null);
-
+  
   useEffect(() => {
-    
     if (postDetails && postDetails.uid) {
+
+      localStorage.setItem('savedPostDetails', JSON.stringify(postDetails));
+      
       const fetchUserDetails = async () => {
         try {
+
           const q = query(collection(db, "users"), where("id", "==", postDetails.uid));
           const querySnapshot = await getDocs(q);
 
           if (!querySnapshot.empty) {
             querySnapshot.forEach((doc) => {
               setUserDetails(doc.data());
-              console.log(userDetails)
             });
             
           } else {
@@ -33,8 +34,13 @@ function SingleProductView() {
       };
 
       fetchUserDetails();
+    } else {
+      const savedPostDetails = localStorage.getItem('savedPostDetails');
+      if (savedPostDetails) {
+        setPostDetails(JSON.parse(savedPostDetails));
+      }
     }
-  }, [postDetails]);
+  }, [postDetails, setPostDetails]);
 
   if (!postDetails) {
     return (
@@ -95,25 +101,23 @@ function SingleProductView() {
           </div>
 
           <div className="sellerSection">
-  <h3>Seller Information</h3>
-  <div className="sellerInfo">
-    <div className="sellerAvatar">
-      <div className="defaultAvatar">
-        {userDetails ? userDetails.name?.charAt(0).toUpperCase() : "S"}
-      </div>
-    </div>
-    <div className="sellerDetails">
-      <p className="sellerName">
-        Seller: {userDetails ? userDetails.username || "Unknown Seller" : "Fetching..."}
-      </p>
-      <p className="sellerPhone">
-        Phone: {userDetails ? userDetails.phone || "Phone number not available" : "Fetching..."}
-      </p>
-    </div>
-  </div>
-</div>
-
-
+            <h3>Seller Information</h3>
+            <div className="sellerInfo">
+              <div className="sellerAvatar">
+                <div className="defaultAvatar">
+                  {userDetails ? userDetails.name?.charAt(0).toUpperCase() : "S"}
+                </div>
+              </div>
+              <div className="sellerDetails">
+                <p className="sellerName">
+                  Seller: {userDetails ? userDetails.username || "Unknown Seller" : "Fetching..."}
+                </p>
+                <p className="sellerPhone">
+                  Phone: {userDetails ? userDetails.phone || "Phone number not available" : "Fetching..."}
+                </p>
+              </div>
+            </div>
+          </div>
 
           <div className="actionButtons">
             <button className="contactButton" onClick={handleContactSeller}>
